@@ -1,51 +1,93 @@
 const { Router } = require('express');
 const Blog = require('../models/blog');
-const User = require('../models/user');
-const { enhanceContent } = require('../util/Groq');
-const { summarizeContent } = require('../util/Groq');
+const Comment = require('../models/Comment');
+const checkCookies = require('../middlewares/auth');
+const { enhanceContent, summarizeContent, analyzeComments } = require('../util/Groq');
 const router = Router();
 
-// Fetch all users
-router.post('/addBlog', async (req, res) => {
+// Create a new blog
+router.post('/addBlog', checkCookies('token'), async (req, res) => {
     const { title, content } = req.body;
-    const author = req.user._id; // Assuming `req.user` is populated via middleware
 
     if (!title || !content) {
         return res.status(400).json({ error: 'Title and content are required.' });
     }
 
     try {
-        const blog = await Blog.create({
-            title,
-            content,
-            author,
-        });
-        return res.status(201).json(blog); // Return the created blog
+        const author = req.user._id;
+        const blog = await Blog.create({ title, content, author });
+        res.status(201).json({ message: 'Blog created successfully.', blog });
     } catch (error) {
-        console.error("Error while creating blog:", error);
-        return res.status(500).json({ error: 'An error occurred while creating the blog.' });
+        console.error('Error creating blog:', error);
+        res.status(500).json({ error: 'Failed to create blog.' });
     }
 });
 
-
-// Fetch all blogs by the current user
-router.get("/yourBlogs", async (req, res) => {
+// Get all blogs
+router.get('/allBlogs', async (req, res) => {
     try {
-        const blogs = await Blog.find({ author: req.user._id }).populate('author');
-        res.json({ user: req.user, blogs, error: null });
+        const blogs = await Blog.find().populate('author', 'Name Email').sort({ createdAt: -1 });
+        res.json({ blogs });
     } catch (error) {
-        console.error("Error fetching blogs:", error);
-        res.status(500).json({ user: req.user, blogs: [], error: "Failed to load your blogs." });
+        console.error('Error fetching blogs:', error);
+        res.status(500).json({ error: 'Failed to load blogs.' });
     }
 });
 
-// Summarize a specific blog
+// Generate a blog with AI
+router.post('/AI', checkCookies('token'), async (req, res) => {
+    const { title, temperature, language } = req.body;
+
+    if (!title || !language) {
+        return res.status(400).json({ error: 'Title and language are required.' });
+    }
+
+    try {
+        const prompt = `Write a blog in ${language} with the title: ${title}`;
+        const content = await enhanceContent(prompt, parseFloat(temperature || 0.7));
+        const blog = await Blog.create({ title, content, author: req.user._id });
+
+        res.status(201).json({ message: 'AI-generated blog created successfully.', blog });
+    } catch (error) {
+        console.error('Error creating AI blog:', error);
+        res.status(500).json({ error: 'Failed to create AI blog.' });
+    }
+});
+
+router.get('/yourBlogs', checkCookies('token'), async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const blogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
+        if (!blogs.length) {
+            return res.status(404).json({ message: 'No blogs found for this user.' });
+        }
+        res.status(200).json({ blogs });
+    } catch (error) {
+        console.error('Error fetching user blogs:', error);
+        res.status(500).json({ message: 'Server error while fetching user blogs.' });
+    }
+});
+
+// Get blogs by a specific user
+router.get('/:userId/blogs', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const blogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
+        if (!blogs.length) {
+            return res.status(404).json({ message: 'No blogs found for this user.' });
+        }
+        res.status(200).json({ blogs });
+    } catch (error) {
+        console.error('Error fetching blogs:', error);
+        res.status(500).json({ message: 'Server error while fetching blogs.' });
+    }
+});
+
+// Summarize blog content
 router.post('/:id/summarize', async (req, res) => {
     try {
-        const blog = await Blog.findById(req.params.id).populate('author');
-        if (!blog) {
-            return res.status(404).json({ error: 'Blog not found.' });
-        }
+        const blog = await Blog.findById(req.params.id).populate('author', 'Name Email');
+        if (!blog) return res.status(404).json({ error: 'Blog not found.' });
 
         const summarizedContent = await summarizeContent(blog.content);
         res.json({ blog: { ...blog.toObject(), content: summarizedContent }, isSummarized: true });
@@ -55,56 +97,76 @@ router.post('/:id/summarize', async (req, res) => {
     }
 });
 
-// Fetch a specific blog
-router.get('/:id', async (req, res) => {
-    try {
-        const blog = await Blog.findById(req.params.id).populate("author");
-        if (!blog) {
-            return res.status(404).json({ error: "Blog not found." });
-        }
-        res.json({ blog, isSummarized: !!blog.isSummarized });
-    } catch (error) {
-        console.error("Error fetching blog:", error);
-        res.status(500).json({ error: "Failed to load the blog." });
+// Add a comment to a blog
+router.post('/:id/comments', checkCookies('token'), async (req, res) => {
+    const { content } = req.body;
+    const { id } = req.params;
+
+    if (!content) {
+        return res.status(400).json({ error: 'Comment content is required.' });
     }
-});
 
-// AI-generated blog creation
-router.post('/AI', async (req, res) => {
-    const { title, temperature, language } = req.body;
     try {
-        const enhancedPrompt = `Write a blog in ${language} based on the title: ${title}`;
-        let content = await enhanceContent(enhancedPrompt, parseFloat(temperature));
-        content = content.replace(/\*/g, " ");
-
-        const blog = await Blog.create({
-            title,
+        const comment = await Comment.create({
             content,
             author: req.user._id,
+            blog: id,
         });
 
-        res.status(201).json({ message: "Blog created successfully.", blog });
+        const populatedComment = await comment.populate('author', 'Name Email');
+        res.status(201).json({ message: 'Comment added successfully.', comment: populatedComment });
     } catch (error) {
-        console.error("Error while creating blog:", error);
-        res.status(500).json({ error: 'An error occurred while creating the blog.' });
+        console.error('Error adding comment:', error);
+        res.status(500).json({ error: 'Failed to add comment.' });
     }
 });
 
-// Manually created blog
-router.post('/', async (req, res) => {
-    const { title, content } = req.body;
-    const author = req.user._id;
-
-    if (!title || !content || !author) {
-        return res.status(400).json({ error: 'Title, content, and author are required.' });
-    }
+// Get comments for a blog
+router.get('/:id/comments', async (req, res) => {
+    const { id } = req.params;
 
     try {
-        const blog = await Blog.create({ title, content, author });
-        res.status(201).json({ message: "Blog created successfully.", blog });
+        const comments = await Comment.find({ blog: id })
+            .populate('author', 'Name Email')
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({ comments });
     } catch (error) {
-        console.error("Error while creating blog:", error);
-        res.status(500).json({ error: 'An error occurred while creating the blog.' });
+        console.error('Error fetching comments:', error);
+        res.status(500).json({ error: 'Failed to load comments.' });
+    }
+});
+
+// Analyze comments
+router.post('/:id/analyzeComments', async (req, res) => {
+    try {
+        const comments = await Comment.find({ blog: req.params.id }).select('content');
+        if (!comments.length) {
+            return res.status(404).json({ error: 'No comments found for analysis.' });
+        }
+
+        const commentsContent = comments.map(comment => comment.content);
+        console.log(commentsContent);
+        const analysis = await analyzeComments(commentsContent);
+
+        res.status(200).json({ analysis });
+    } catch (error) {
+        console.error('Error analyzing comments:', error);
+        res.status(500).json({ error: 'Failed to analyze comments.' });
+    }
+});
+
+// Get a single blog
+router.get('/:id', async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id).populate('author', 'Name Email');
+        if (!blog) {
+            return res.status(404).json({ error: 'Blog not found.' });
+        }
+        res.json({ blog });
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+        res.status(500).json({ error: 'Failed to load the blog.' });
     }
 });
 

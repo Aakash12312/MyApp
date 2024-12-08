@@ -1,27 +1,11 @@
 const { Router } = require('express');
 const User = require('../models/user');
-const checkCookies = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const checkCookies = require('../middlewares/auth');
 const router = Router();
 
-// Middleware to check cookies and decode token
-router.use(checkCookies('token'));
-
-// Get user profile - Protected route
-router.get('/profile', async (req, res) => {
-    if (!req.user) {
-        return res.status(401).json({ error: 'Unauthorized. Please log in.' });
-    }
-
-    try {
-        const user = req.user; // User should be set by the auth middleware after verifying token
-        res.status(200).json({ user: { id: user._id, name: user.Name, email: user.Email } }); // Return user info
-    } catch (error) {
-        console.error('Error fetching user profile:', error);
-        res.status(500).json({ error: 'Failed to load profile' });
-    }
-});
+const JWT_SECRET = process.env.JWT_SECRET || 'A@ka$h';
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -29,33 +13,24 @@ router.post('/login', async (req, res) => {
 
     try {
         const user = await User.findOne({ Email });
-        if (!user) {
-            throw new Error('User not found');
-        }
+        if (!user) return res.status(404).json({ error: 'User not found' });
 
-        // Compare the provided password with the stored hashed password
         const isMatch = await bcrypt.compare(Password, user.Password);
-        if (!isMatch) {
-            throw new Error('Incorrect Password');
-        }
+        if (!isMatch) return res.status(401).json({ error: 'Incorrect password' });
 
         const token = jwt.sign(
             { id: user._id, Name: user.Name, Email: user.Email, role: user.roles },
-            'A@ka$h', // Secret key
-            { expiresIn: '1h' } // Token expiration
+            JWT_SECRET,
+            { expiresIn: '1h' }
         );
-        res.cookie('token', token, { 
-            httpOnly: true, 
-            maxAge: 3600000, // 1 hour
-            sameSite: 'lax', // Adjust as needed
-        }).status(200).json({
-            token,
-            user: { name: user.Name, email: user.Email },
-        });
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'lax',
+        }).status(200).json({ token, user: { id: user._id, name: user.Name, email: user.Email } });
     } catch (error) {
-        console.error('Error during login:', error.message);
-        res.status(401).json({ error: error.message });
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Login failed. Please try again.' });
     }
 });
 
@@ -68,28 +43,84 @@ router.post('/signup', async (req, res) => {
     }
 
     try {
-        // Check if the user already exists
         const existingUser = await User.findOne({ Email });
-        if (existingUser) {
-            return res.status(400).json({ error: 'User already exists' });
-        }
-
-        const hashedPassword = await bcrypt.hash(Password, 10); // Hash the password
-        const newUser = await User.create({ Name, Email, Password: hashedPassword });
+        if (existingUser) return res.status(400).json({ error: 'User already exists' });
+        
+        const newUser = await User.create({ Name, Email, Password:Password });
 
         const token = jwt.sign(
             { id: newUser._id, Name: newUser.Name, Email: newUser.Email },
-            process.env.JWT_SECRET || 'your-secret-key',
+            JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }).status(201).json({
-            message: 'Signup successful.',
-            user: { id: newUser._id, name: newUser.Name, email: newUser.Email },
+        res.cookie('token', token, { httpOnly: true, maxAge: 3600000 })
+            .status(201)
+            .json({ message: 'Signup successful.', user: { id: newUser._id, name: newUser.Name, email: newUser.Email } });
+    } catch (error) {
+        console.error('Error during signup:', error);
+        res.status(500).json({ error: 'Signup failed. Please try again.' });
+    }
+});
+
+// Protected route: User profile
+router.get('/profile', checkCookies('token'), async (req, res) => {
+    try {
+        const user = req.user;
+        if (!user) return res.status(401).json({ error: 'Unauthorized. Please log in.' });
+
+        res.status(200).json({
+            user: {
+                id: user._id,
+                name: user.Name,
+                email: user.Email,
+                roles: user.roles, // Ensure roles are included
+            },
         });
     } catch (error) {
-        console.error('Error during signup:', error.message);
-        res.status(500).json({ error: 'Signup failed. Please try again.' });
+        console.error('Error fetching profile:', error);
+        res.status(500).json({ error: 'Failed to load profile.' });
+    }
+});
+
+
+// Search user by name
+router.get('/search', async (req, res) => {
+    const { Name } = req.query;
+
+    try {
+        if (!Name) return res.status(400).json({ error: 'Name query parameter is required.' });
+
+        const user = await User.findOne({ Name });
+        if (!user) return res.status(404).json({ error: 'User not found.' });
+
+        res.json({ user }); // Ensure you're sending the user object here
+    } catch (error) {
+        console.error('Error searching user:', error);
+        res.status(500).json({ error: 'Server error during user search.' });
+    }
+});
+
+
+router.delete('/delete/:id', checkCookies('token'), async (req, res) => {
+    try {
+        const adminUser = req.user; // Extract logged-in user
+        if (adminUser.role !== 'admin') {
+            return res.status(403).json({ error: 'Permission denied. Only admins can delete accounts.' });
+        }
+
+        const userId = req.params.id;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        await User.findByIdAndDelete(userId);
+        res.status(200).json({ message: 'User account deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting account:', error);
+        res.status(500).json({ error: 'Failed to delete user account.' });
     }
 });
 
