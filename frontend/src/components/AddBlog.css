@@ -1,0 +1,141 @@
+/* AddBlog.css */
+
+/* AddBlog page container */
+.add-blog-container {
+    position: relative; /* Needed for positioning pseudo-elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full page height */
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden; /* Hide overflow from pseudo-element */
+}
+
+/* Background image with blur effect */
+.add-blog-container::before {
+    content: ""; /* Required for pseudo-elements */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-image: url("../../public/BackImg.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; */
+    filter: blur(2px); /* Apply blur effect */
+    z-index: -1; /* Ensure it stays behind the content */
+    opacity: 0.8; /* Optional: Slight transparency */
+}
+
+/* Form wrapper */
+.add-blog-form {
+    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 100%;
+    max-width: 500px; /* Limit form width */
+    z-index: 1; /* Ensure it stays above the blurred background */
+}
+
+/* Form title */
+.add-blog-form h2 {
+    text-align: center;
+    color: #333; /* Dark grey text */
+    margin-bottom: 20px;
+}
+
+/* Error message */
+.add-blog-form .error-message {
+    color: #e74c3c; /* Red color for error */
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* Form groups */
+.add-blog-form .form-group {
+    margin-bottom: 20px;
+}
+
+/* Labels */
+.add-blog-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555; /* Medium grey */
+}
+
+/* Input fields */
+.add-blog-form input,
+.add-blog-form textarea {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* Input hover and focus */
+.add-blog-form input:focus,
+.add-blog-form textarea:focus {
+    border-color: #007bff; /* Blue focus border */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue glow */
+}
+
+/* Textarea customization */
+.add-blog-form textarea {
+    min-height: 150px; /* Minimum height for the textarea */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+/* Submit button */
+.add-blog-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff; /* Primary blue */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Submit button hover and active states */
+.add-blog-form button:hover {
+    background-color: #0056b3; /* Darker blue */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.add-blog-form button:active {
+    background-color: #004085; /* Even darker blue */
+    transform: translateY(0); /* Reset lift */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .add-blog-form {
+        padding: 20px;
+    }
+
+    .add-blog-form h2 {
+        font-size: 20px;
+    }
+
+    .add-blog-form input,
+    .add-blog-form textarea {
+        font-size: 13px;
+    }
+
+    .add-blog-form button {
+        font-size: 14px;
+    }
+}

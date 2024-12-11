@@ -1,0 +1,96 @@
+/* General Reset */
+* {
+  margin-right: 20;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* App Container */
+.App {
+  text-align: center;
+  background-color: #f5f5f5; /* Light gray background */
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Header Section */
+header {
+  background-color: #030a19; 
+  color: rgb(255, 255, 255); /* White text */
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+main {
+  margin: 2rem auto;
+  padding: 1rem;
+  max-width: 800px;
+  background-color: white; /* White card-like background */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+main h1 {
+  font-size: 2rem;
+  color: #333; /* Dark text */
+  margin-bottom: 1rem;
+}
+
+main p {
+  font-size: 1.2rem;
+  color: #555; /* Slightly lighter text */
+  line-height: 1.6;
+}
+
+/* Buttons */
+button {
+  background-color: #61dafb; /* React blue */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #21a1f1; /* Darker blue on hover */
+}
+
+/* Footer Section */
+footer {
+  margin-top: auto;
+  background-color: #282c34;
+  color: white;
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Utility Classes */
+.text-bold {
+  font-weight: bold;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}

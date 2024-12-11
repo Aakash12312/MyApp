@@ -1,0 +1,44 @@
+.your-blogs-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center; /* Align content to the center */
+}
+
+.blog-card {
+  display: inline-block; /* Allow centering by treating as inline element */
+  width: 90%; /* Increase card width for a larger appearance */
+  max-width: 600px; /* Limit maximum width for better scaling */
+  border: 1px solid #ddd;
+  padding: 20px; /* Increase padding for better spacing */
+  margin-bottom: 15px; /* Add more space between cards */
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for better appearance */
+}
+
+.blog-card h2 {
+  margin-bottom: 15px; /* Add more spacing under the title */
+  font-size: 1.5rem; /* Make the title slightly larger */
+}
+
+.blog-card p {
+  color: #666;
+  font-size: 1rem; /* Adjust text size for better readability */
+  margin-bottom: 15px; /* Add spacing between content and buttons */
+}
+
+.blog-card button {
+  background-color: #34414f;
+  color: #fff;
+  border: none;
+  padding: 10px 15px; /* Adjust padding for larger buttons */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* Space between buttons */
+  font-size: 0.9rem; /* Slightly increase button text size */
+}
+
+.blog-card button:hover {
+  background-color: #bdcfe2;
+}

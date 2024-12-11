@@ -1,0 +1,89 @@
+.edit-blog-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f9f9f9; /* Add background color for better contrast */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-blog-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Form Labels */
+.edit-blog-container form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Text Input Fields */
+.edit-blog-container form input,
+.edit-blog-container form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+/* Focus Effect for Input and Textarea */
+.edit-blog-container form input:focus,
+.edit-blog-container form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Set a larger height for textarea */
+.edit-blog-container form textarea {
+  min-height: 300px; /* Increased height for the content box */
+  resize: vertical; /* Allow resizing vertically */
+}
+
+/* Button Styling */
+.edit-blog-container form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Button Hover Effect */
+.edit-blog-container form button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .edit-blog-container {
+    padding: 15px;
+  }
+
+  .edit-blog-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .edit-blog-container form input,
+  .edit-blog-container form textarea {
+    font-size: 0.95rem;
+  }
+
+  .edit-blog-container form button {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+}

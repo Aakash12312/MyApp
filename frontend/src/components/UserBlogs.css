@@ -1,0 +1,67 @@
+.user-blogs-container {
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+  }
+  
+  .user-blogs-container h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .blog-card {
+    border: 1px solid #ddd;
+    margin: 15px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    width: 80%; /* Set a fixed width to prevent cards from stretching too wide */
+    max-width: 700px; /* Optional: Set a max width for larger screens */
+    text-align: left; /* Align text inside the card to the left */
+  }
+  
+  .blog-card h3 {
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  .blog-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .blog-card .date {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  .blog-card button {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .blog-card button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+  
+  .loading-message {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  

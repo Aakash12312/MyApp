@@ -1,0 +1,111 @@
+.blog-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.blog-detail {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-detail h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.blog-detail p {
+    margin-bottom: 15px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.blog-meta {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.comments-section {
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.comments-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.analyze-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.analyze-btn:hover {
+    background-color: #45a049;
+}
+
+.comment-analysis {
+    background-color: #eaf2e1;
+    border: 1px solid #c8e6c9;
+    padding: 15px;
+    border-radius: 5px;
+    color: #388e3c;
+    margin-bottom: 20px;
+}
+
+.comment-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.comment-btn:hover {
+    background-color: #0056b3;
+}
+
+.comments-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.comments-list li {
+    background-color: #f1f1f1;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comments-list li p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.comments-list li small {
+    font-size: 0.8rem;
+    color: #666;
+}

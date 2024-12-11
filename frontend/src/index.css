@@ -1,0 +1,200 @@
+Global reset
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ 
+/* App.css */
+
+  body { 
+  /* background-color: #f2efef;  */
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  padding: 0;
+  height: 100%;
+  background-position: center;
+    background-size: cover;
+    z-index: -1;
+    opacity: 0.8; 
+  background-color:#e9f3ff; 
+  }
+
+ /* .watermark {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+  background: url('./assets/image3.jpg') no-repeat center/cover;
+  background: size 10%;
+  opacity: 0.1; 
+}  */
+.watermark {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Watermark spans the full width */
+  height: 100%; /* Watermark spans the full height */
+  z-index: -1; /* Keeps it behind the content */
+  background: url('./assets/image3.jpg') center center no-repeat; /* Centers the image */
+  background-size: contain; /* Keeps the image size fixed */
+  background-repeat: repeat-y; /* Repeats vertically to fill white gaps */
+  opacity: 0.2; /* Subtle watermark */
+  pointer-events: none; /* Prevent interaction */
+  background-color: rgb(19, 17, 80);
+}
+
+
+
+.navbar {
+  position: 0px 0px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.8); 
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10; 
+}
+
+.navbar a {
+  color: rgb(227, 222, 222);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.main-content {
+  text-align: center;
+  margin-top: 6rem; /* Push content below the navbar */
+  padding: 2rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background-color: black;
+  color: rgb(82, 8, 8);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #ab6363;
+}
+
+
+
+/* Links styling */
+a {
+  text-decoration: none;
+  color: inherit; /* Matches text color */
+}
+
+a:hover {
+  color: teal; /* Add a hover effect */
+}
+
+/* Header styling */
+header {
+  background-color: #246eb8; /* Dark blue background */
+  color: rgb(250, 242, 242);
+  padding: 1rem;
+}
+
+/* Buttons styling */
+button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4ade80; /* Light green on hover */
+  color: white;
+}
+
+/* Responsive Grid */
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive layout */
+}
+
+/* Footer styling */
+footer {
+  background-color:#697565 ;
+   color: white;
+  text-align: center;
+  padding: 0.19rem;
+}
+.main-content {
+  /* background: rgba(255, 255, 255, 0.8); Semi-transparent white background */
+  color: #333; /* Dark text color */
+  text-align: center; /* Center align text */
+  padding: 60px 20px; /* Padding around the content */
+  border-radius: 10px; /* Rounded corners */
+   /* Subtle shadow for depth */
+  max-width: 800px; /* Maximum width */
+  margin: 40px auto; /* Centered with margin */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+}
+
+.main-content h1 {
+  font-size: 3rem; /* Larger font size for heading */
+  font-weight: bold;
+  margin-bottom: 25px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Margin below paragraphs */ /* Margin below heading */
+}
+
+.main-content p {
+  
+  font-size: 1.5rem; /* Larger font size for paragraphs */
+  margin-bottom: 10px;
+  color: #3C3D37;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.start-journey-button {
+  background-color:#3C3D37; /* Button background color */
+  color: white; /* Button text color */
+  padding: 15px 30px; /* Padding inside button */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 1.25rem; /* Larger font size for button text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  margin-top: 50px; 
+  /* Margin above the button */
+}
+
+.start-journey-button:hover {
+  background-color: #5e5e66; /* Darker color on hover */
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+  position: bottom;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+  text-align: centre;
+}
