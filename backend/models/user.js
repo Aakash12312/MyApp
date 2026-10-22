@@ -27,13 +27,11 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.pre('save', async function(next) {
+    userSchema.pre('save', async function(next) {
     if (this.isModified('Password')) {
         const salt = await bcrypt.genSalt(10);
-        console.log(salt);
-        this.salt = salt
+        this.salt = salt;
         this.Password = await bcrypt.hash(this.Password, salt);
-        console.log(this.Password);
     }
     next();
 });
@@ -46,8 +44,7 @@ userSchema.statics.passmatch = async function (Email, Password) {
 
     
 
-    console.log(abc);
-    console.log(user.Password);
+    // Avoid leaking sensitive information in logs
 
     const isMatch = await bcrypt.compare(Password, user.Password);
 
