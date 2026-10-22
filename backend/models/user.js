@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('./../utils/config');
+const JWT_SECRET = getJwtSecret();
 
 const userSchema = new mongoose.Schema({
     Name: {
@@ -56,7 +58,7 @@ userSchema.statics.passmatch = async function (Email, Password) {
     // Generate JWT token if the password is correct
     const token = jwt.sign(
         { id: user._id, Name: user.Name, Email: user.Email, role: user.roles },
-        'A@ka$h',
+        JWT_SECRET,
         { expiresIn: '1h' } // Token expiration time
     );
 

@@ -1,5 +1,9 @@
 const JWT = require('jsonwebtoken');
+const { getJwtSecret } = require('../utils/config');
 const User = require('../models/user');
+
+// Initialize secret once; will throw if JWT_SECRET is not configured
+const JWT_SECRET = getJwtSecret();
 
 const checkCookies = (cookieName) => {
     return async (req, res, next) => {
@@ -11,7 +15,7 @@ const checkCookies = (cookieName) => {
         }
 
         try {
-            const decoded = JWT.verify(token, 'A@ka$h');
+            const decoded = JWT.verify(token, JWT_SECRET);
             const user = await User.findById(decoded.id);
             req.user = user;
             next();

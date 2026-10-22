@@ -2,10 +2,12 @@ const { Router } = require('express');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../utils/config');
+const JWT_SECRET = getJwtSecret();
 const checkCookies = require('../middlewares/auth');
 const router = Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'A@ka$h';
+// JWT_SECRET now sourced from centralized config
 
 // Login route
 router.post('/login', async (req, res) => {
