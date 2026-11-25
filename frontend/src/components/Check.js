@@ -53,8 +53,8 @@ const CheckBlog = () => {
       <p>{blog.content}</p>
       <h4>Suggestions</h4>
       <ul>
-        {suggestions.map((suggestion, index) => (
-          <li key={index}>{suggestion}</li>
+        {suggestions.map((suggestion) => (
+          <li key={suggestion}>{suggestion}</li>
         ))}
       </ul>
       <button onClick={handleConfirm}>Confirm and Submit</button>

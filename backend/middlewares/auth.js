@@ -14,14 +14,22 @@ const checkCookies = (cookieName) => {
             return next();
         }
 
+        let decoded;
         try {
-            const decoded = JWT.verify(token, JWT_SECRET);
-            const user = await User.findById(decoded.id);
-            req.user = user;
-            next();
+            decoded = JWT.verify(token, JWT_SECRET);
         } catch (error) {
             req.user = null;
-            next();
+            if (error instanceof JWT.JsonWebTokenError) {
+                return next();
+            }
+            return next(error);
+        }
+
+        try {
+            req.user = await User.findById(decoded.id);
+            return next();
+        } catch (error) {
+            return next(error);
         }
     };
 };
