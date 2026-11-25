@@ -20,7 +20,7 @@ const YourBlogs = () => {
         return response.json();
       })
       .then((data) => {
-        if (data && data.blogs) {
+        if (data?.blogs) {
           setBlogs(data.blogs);
         } else {
           alert("No blogs found.");
