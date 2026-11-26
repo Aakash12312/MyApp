@@ -30,6 +30,7 @@ const CreateAI = () => {
         setErrorMessage(data.error || "Failed to generate blog.");
       }
     } catch (error) {
+      console.error("AI blog generation failed:", error);
       setErrorMessage("An error occurred while generating the blog.");
     } finally {
       setIsSubmitting(false);

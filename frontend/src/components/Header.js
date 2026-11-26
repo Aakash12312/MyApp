@@ -88,9 +88,18 @@ const Header = ({ isLoggedIn, userName, handleLogout }) => {
             <Link to="/user/search" style={navLinkStyle}>
               Search User
             </Link>
-            <span onClick={handleLogout} style={navLinkStyle}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{
+                ...navLinkStyle,
+                background: "none",
+                border: 0,
+                fontFamily: "inherit",
+              }}
+            >
               Logout
-            </span>
+            </button>
           </>
         )}
       </nav>

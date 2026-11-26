@@ -18,7 +18,10 @@ function verifyToken(token) {
         const decoded = JWT.verify(token, JWT_SECRET);
         return decoded;
     } catch (error) {
-        return null;
+        if (error instanceof JWT.JsonWebTokenError) {
+            return null;
+        }
+        throw error;
     }
 }
 
