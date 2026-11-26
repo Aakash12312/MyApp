@@ -44,7 +44,7 @@ router.post('/AI', checkCookies('token'), async (req, res) => {
 
     try {
         const prompt = `Write a blog in ${language} with the title: ${title}`;
-        const content = await enhanceContent(prompt, parseFloat(temperature || 0.7));
+        const content = await enhanceContent(prompt, Number.parseFloat(temperature || 0.7));
         const blog = await Blog.create({ title, content, author: req.user._id });
 
         res.status(201).json({ message: 'AI-generated blog created successfully.', blog });

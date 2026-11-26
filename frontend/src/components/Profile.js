@@ -20,7 +20,7 @@ const Profile = () => {
         return response.json();
       })
       .then((data) => {
-        if (data && data.user) {
+        if (data?.user) {
           setUserData(data.user); // Set user data
         }
       })
