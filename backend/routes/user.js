@@ -127,7 +127,7 @@ router.delete('/delete/:id', checkCookies('token'), async (req, res) => {
 });
 
 // Logout route
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     res.clearCookie('token').status(200).json({ message: 'Logged out successfully.' });
 });
 

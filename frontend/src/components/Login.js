@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./LoginRegister.css";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { csrfFetch } from "../api";
 
 const Login = ({ handleLogin }) => {
   const navigate = useNavigate();
@@ -24,11 +25,10 @@ const Login = ({ handleLogin }) => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/user/login", {
+      const response = await csrfFetch("http://localhost:5000/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),
-        credentials: "include",
       });
 
       const result = await response.json();
@@ -48,7 +48,7 @@ const Login = ({ handleLogin }) => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/user/signup", {
+      const response = await csrfFetch("http://localhost:5000/user/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registerData),

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { csrfFetch } from "../api";
 import "./EditBlog.css";
 
 const EditBlog = () => {
@@ -29,10 +30,9 @@ const EditBlog = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/blog/editBlog/${id}`, {
+    csrfFetch(`http://localhost:5000/blog/editBlog/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ title, content }),
     })
       .then((response) => {

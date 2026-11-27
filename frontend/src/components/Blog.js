@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { csrfFetch } from "../api";
 import "./Blog.css";
 
 const Blog = () => {
@@ -29,10 +30,9 @@ const Blog = () => {
 
     const handleSummarize = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/blog/${id}/summarize`, {
+            const response = await csrfFetch(`http://localhost:5000/blog/${id}/summarize`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include",
             });
 
             const data = await response.json();
@@ -49,10 +49,9 @@ const Blog = () => {
 
     const handleAnalyzeComments = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/blog/${id}/analyzeComments`, {
+            const response = await csrfFetch(`http://localhost:5000/blog/${id}/analyzeComments`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include",
             });
 
             const data = await response.json();
@@ -69,10 +68,9 @@ const Blog = () => {
     const handleAddComment = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000/blog/${id}/comments`, {
+            const response = await csrfFetch(`http://localhost:5000/blog/${id}/comments`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({ content: newComment }),
             });
 
