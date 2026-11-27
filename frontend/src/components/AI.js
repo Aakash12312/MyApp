@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { csrfFetch } from "../api";
 import "./AI.css"
 
 const CreateAI = () => {
@@ -15,11 +16,10 @@ const CreateAI = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/blog/AI", {
+      const response = await csrfFetch("http://localhost:5000/blog/AI", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, temperature, language }),
-        credentials: "include",
       });
 
       const data = await response.json();

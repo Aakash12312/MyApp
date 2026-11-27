@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { csrfFetch } from '../api';
 
 const Signup = () => {
   const [form, setForm] = useState({ Name: '', Email: '', Password: '' });
@@ -17,10 +18,9 @@ const Signup = () => {
     setMessage(null); // Clear previous messages
     try {
       console.log('Submitting form:', form);
-      const response = await fetch('http://localhost:5000/user/signup', {
+      const response = await csrfFetch('http://localhost:5000/user/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(form),
       });
       

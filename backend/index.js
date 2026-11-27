@@ -3,12 +3,24 @@ const path = require('node:path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const { doubleCsrf } = require('csrf-csrf');
 const checkCookies = require('./middlewares/auth');
+const { getJwtSecret } = require('./utils/config');
 const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const Blog = require('./models/blog');
 
 const app = express();
+const { generateCsrfToken, doubleCsrfProtection } = doubleCsrf({
+    getSecret: getJwtSecret,
+    getSessionIdentifier: (req) => req.cookies.token || 'anonymous',
+    cookieName: 'csrf-token',
+    cookieOptions: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+    },
+});
 
 mongoose.connect('mongodb://localhost:27017/ejs')
     .then(() => {
@@ -24,6 +36,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(checkCookies("token"));
+
+app.get('/csrf-token', (req, res) => {
+    res.json({ csrfToken: generateCsrfToken(req, res) });
+});
+app.use(doubleCsrfProtection);
 
 // API routes
 app.use('/user', userRouter);

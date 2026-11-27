@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { csrfFetch } from "../api";
 import "./AddBlog.css"; // Import the CSS file for scoped styling
 
 const AddBlog = () => {
@@ -11,13 +12,12 @@ const AddBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/blog/addBlog", {
+      const response = await csrfFetch("http://localhost:5000/blog/addBlog", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ title, content }),
-        credentials: "include",
       });
 
       if (!response.ok) {

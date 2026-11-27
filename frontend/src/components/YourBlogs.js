@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { csrfFetch } from "../api";
 import "./YourBlogs.css";
 
 const YourBlogs = () => {
@@ -34,10 +35,9 @@ const YourBlogs = () => {
 
   const deleteBlog = (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
-      fetch(`http://localhost:5000/blog/${id}`, {
+      csrfFetch(`http://localhost:5000/blog/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
       })
         .then((response) => {
           if (response.ok) {

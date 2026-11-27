@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { csrfFetch } from "../api";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CheckBlog = () => {
@@ -30,7 +31,7 @@ const CheckBlog = () => {
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/blog/confirmBlog/${id}`, {
+      const response = await csrfFetch(`http://localhost:5000/blog/confirmBlog/${id}`, {
         method: "POST",
         credentials: "include",
       });

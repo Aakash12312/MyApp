@@ -13,6 +13,7 @@ import SearchUser from "./components/SearchUser";
 import EditBlog from "./components/EditBlog";
 import UserBlogs from "./components/UserBlogs";
 import TeamPage from "./components/TeamPage";
+import { csrfFetch } from "./api";
 import "./App.css";
 
 const AppContent = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
@@ -20,9 +21,8 @@ const AppContent = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user/logout", {
-        method: "GET",
-        credentials: "include",
+      const response = await csrfFetch("http://localhost:5000/user/logout", {
+        method: "POST",
       });
 
       if (response.ok) {
